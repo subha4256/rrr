@@ -1,16 +1,11 @@
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@5.2
-      with:
-        switches: -avzr --delete --exclude="" --include="" --filter=""
-        path: rrr/
-        remote_path: /var/www/html/
-        remote_host: 172.105.55.134
-        remote_port: 22
-        remote_user: root
-        remote_key: ${{ secrets.MY_LINODESERVER }}
+runs-on: ubuntu-latest
+steps:
+- name: Install SSH key
+  uses: shimataro/ssh-key-action@v2
+  with:
+    key: ${{ secrets.MY_LINODESERVER }}
+    
 
+    
+- name: rsync over ssh
+  run: rsync ./rrr/ root@172.105.55.134:/var/www/html/
