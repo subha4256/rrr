@@ -4,8 +4,9 @@ steps:
   uses: shimataro/ssh-key-action@v2
   with:
     key: ${{ secrets.MY_LINODESERVER }}
-    
-
-    
+    name: id_rsa # optional
+    known_hosts: ${{ secrets.SSH_HOST }}
+    config: ${{ secrets.CONFIG }} # ssh_config; optional
 - name: rsync over ssh
   run: rsync ./rrr/ root@172.105.55.134:/var/www/html/
+
