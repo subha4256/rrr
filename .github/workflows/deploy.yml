@@ -1,20 +1,16 @@
-name: DEPLOY
-on:
-  push:
-    branches:
-    - main
-
 jobs:
-  deployment:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: rsync deployments
       uses: burnett01/rsync-deployments@5.2
       with:
-        switches: -avzr --delete
+        switches: -avzr --delete --exclude="" --include="" --filter=""
         path: rrr/
         remote_path: /var/www/html/
         remote_host: 172.105.55.134
+        remote_port: 22
         remote_user: root
         remote_key: ${{ secrets.MY_LINODESERVER }}
+
