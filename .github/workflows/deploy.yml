@@ -4,10 +4,10 @@ on:
     branches:
     - main
 
-#jobs:
+jobs:
   deployment:
-   # runs-on: ubuntu-latest
-    #steps:
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@v2
     - name: rsync deployments
       uses: burnett01/rsync-deployments@5.2
