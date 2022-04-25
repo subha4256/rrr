@@ -1,12 +1,21 @@
-runs-on: ubuntu-latest
-steps:
-- name: Install SSH key
-  uses: shimataro/ssh-key-action@v2
-  with:
-    key: ${{ secrets.MY_LINODESERVER }}
-    name: id_rsa # optional
-    known_hosts: ${{ secrets.SSH_HOST }}
-    config: ${{ secrets.CONFIG }} # ssh_config; optional
-- name: rsync over ssh
-  run: rsync ./rrr/ root@172.105.55.134:/var/www/html/
+on:
+  push:
+    branches: [ main ]
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Auto Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2.3.2
 
+    - name: 📂 Sync files
+      uses: burnett01/rsync-deployments@4.1
+      with:
+        switches: -avzr --delete --exclude=".git" --exclude=".github"
+        path: /
+        remote_path: ${{ secrets.SSH_PATH }}
+        remote_host: ${{ secrets.SSH_HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key: ${{ secrets.MY_LINODESERVER }}
